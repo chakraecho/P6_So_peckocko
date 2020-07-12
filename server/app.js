@@ -3,8 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const mongoAuth = require('./mongoauth')
 
-const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce')
 
-app.use('/api/auth', userRoutes)
+app.use('/api/auth', sauceRoutes)
 
 module.exports = app
