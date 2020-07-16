@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
-const {
-    ObjectID
-} = require('bson')
+
 
 sauceSchema = mongoose.Schema({
     id: {
-        type: ObjectID,
-        required: true
+        type: String,
     },
     userId: {
         type: String,
@@ -30,7 +27,6 @@ sauceSchema = mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        required: true
     },
     heat: {
         type: Number,
@@ -38,11 +34,9 @@ sauceSchema = mongoose.Schema({
     },
     likes: {
         type: Number,
-        required: true
     },
     dislikes: {
         type: Number,
-        required: true
     },
     userLiked: {
         type: [String]
