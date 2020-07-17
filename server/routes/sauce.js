@@ -8,5 +8,5 @@ const sauceCtrl = require('./../controllers/sauce.js')
 router.get('/', sauceCtrl.getAll)
 router.post('/', multer, sauceCtrl.createSauce)
 router.get('/:id', sauceCtrl.getOne)
-
+router.put('/:id',multer, sauceCtrl.modifyOne)
 module.exports = router
