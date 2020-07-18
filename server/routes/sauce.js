@@ -9,4 +9,5 @@ router.get('/', sauceCtrl.getAll)
 router.post('/', multer, sauceCtrl.createSauce)
 router.get('/:id', sauceCtrl.getOne)
 router.put('/:id',multer, sauceCtrl.modifyOne)
+router.delete('/:id', sauceCtrl.deleteOne)
 module.exports = router
