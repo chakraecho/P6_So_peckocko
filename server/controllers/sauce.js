@@ -2,6 +2,7 @@ const sauces = require('../models/sauce');
 const fs = require('fs');
 const { json } = require('body-parser');
 const sauce = require('../models/sauce');
+const user = require('../models/user');
 
 
 exports.getAll = (req, res, next)=>{
@@ -77,23 +78,65 @@ exports.deleteOne = (req, res, next)=>{
 }
 
 
-/*
 exports.likeOne = (req,res, next)=>{
     console.log(req.body)
-    let userLiked;
-    let userDisliked;
-    let likes;
-    sauce.findOne({_id: req.params.id})
+    let userLiked = [];
+    let userDisliked = [];
+    let likes = 0;
+    sauces.findOne({_id: req.params.id})
     .then( sauce => {
-        userLiked=sauce.userLiked;
+        userLiked= sauce.userLiked;
         userDisliked = sauce.userDisliked;
         likes = sauce.likes;
+        dislikes = sauce.dislikes
+        console.log(likes)
+        switch (req.body.like){
+            case 1 :  //like
+            if(!userLiked.includes(req.body.userId)){
+                likes++
+                userLiked.push(req.body.userId)
+                sauces.updateOne({_id : req.params.id}, {likes, userLiked})
+                .then(()=>res.status(200).json({message : 'like !'}))
+                .catch(error => res.status(400).json({error}))
+            }
+
+
+                break;
+            case 0:  //remove like
+                if(userLiked.includes(req.body.userId)){
+                    likes--
+                    let index = userLiked.indexOf(req.body.userId)
+                    console.log(index)
+                    userLiked.splice(index, 1)
+                    sauces.updateOne({_id : req.params.id}, {likes, userLiked})
+                    .then(()=>res.status(200).json({message : 'like retiré !'}))
+                    .catch(error => res.status(400).json({error}))
+
+                }
+                else if (userDisliked.includes(req.body.userId)){
+                    dislikes--
+                    let index = userDisliked.indexOf(req.body.userId)
+                    userDisliked.splice(index, 1)
+                    sauces.updateOne({_id : req.params.id}, {dislikes, userDisliked})
+                    .then(()=>res.status(200).json({message : 'dislike retiré !'}) )
+                    .catch(error => res.status(400).json({error}))
+                }
+                break;
+            case -1:  //dislike
+            if(!userDisliked.includes(req.body.userId)){
+                dislikes++
+                userDisliked.push(req.body.userId)
+                sauces.updateOne({_id : req.params.id}, {dislikes, userDisliked})
+                .then(()=>res.status(200).json({message : 'disliké !'}))
+                .catch(error => res.status(400).json({error}))
+            }
+
+                break;
+        }
+            
     })
     .catch(error => json({error})) 
-        if(userLiked.includes(req.body.userId)|| userDisliked.includes(userId)){
+    
 
-        }
-    sauce.updateOne({_id: req.params.id},{...req.body  })
-        .then(()=>res.status(200).json({message :'sauce mis à jour !'}))
-        .catch( error => json({error}))
-}*/
+
+}
