@@ -13,6 +13,10 @@ userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    wrongPassword : {
+        type: Number,
+        required : true
     }
 })
 userSchema.plugin(uniqueValidator)
