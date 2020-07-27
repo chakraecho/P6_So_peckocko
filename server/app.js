@@ -3,12 +3,14 @@ const app = express()
 const mongoose = require('mongoose')
 const mongoAuth = require('./mongoauth')
 const path = require('path');
+const helmet = require('helmet');
 
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce')
 const bodyParser = require('body-parser');
 
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
