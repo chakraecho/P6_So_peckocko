@@ -1,16 +1,13 @@
 const bcrypt = require('bcrypt')
 const User = require('./../models/user')
 const jwt = require('jsonwebtoken')
-const sanitize = require('mongo-sanitize')
 
 
 exports.signup = (req, res, next) => {
-  const email = sanitize(req.body.email)
-  const password = sanitize(req.body.password)
-  bcrypt.hash(password, 10)
+  bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({
-        email: email,
+        email: req.body.email,
         password: hash,
         wrongPassword: 0
       });
@@ -28,18 +25,17 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  const email = sanitize(req.body.email)
-  const password = sanitize(req.body.password)
-  User.findOne({ email: email })
+  User.findOne({ email: req.body.email })
     .then(user => {
+      console.log(user.wrongPassword)
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
       }
       else{
-        bcrypt.compare(password, user.password)
+        bcrypt.compare(req.body.password, user.password)
         .then(valid => {
           if (!valid) {
-            User.updateOne({email : email}, {$inc : {wrongPassword : +1}})
+            User.updateOne({email : req.body.email}, {$inc : {wrongPassword : +1}})
             .then(()=> console.log(user.wrongPassword))
             .catch(error => error)
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
