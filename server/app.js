@@ -4,12 +4,19 @@ const mongoose = require('mongoose')
 const mongoAuth = require('./mongoauth')
 const path = require('path');
 const helmet = require('helmet');
-
+const toobusy = require('toobusy-js')
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce')
 const bodyParser = require('body-parser');
 
+app.use(function(req, res, next) {
+  if (toobusy()) {
+      res.send(503, "Server Too Busy");
+  } else {
+  next();
+  }
+});
 app.use(helmet());
 
 app.use((req, res, next) => {
