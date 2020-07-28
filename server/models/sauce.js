@@ -38,10 +38,10 @@ sauceSchema = mongoose.Schema({
     dislikes: {
         type: Number,
     },
-    userLiked: {
+    usersLiked: {
         type: [String]
     },
-    userDisliked: {
+    usersDisliked: {
         type: [String]
     }
 })
