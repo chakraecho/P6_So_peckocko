@@ -4,7 +4,6 @@ const multer = require('./../middleware/multer')
 const auth = require('./../middleware/auth.js')
 const sauceCtrl = require('./../controllers/sauce.js')
 
-
 router.get('/',auth, sauceCtrl.getAll)
 router.post('/', auth, multer, sauceCtrl.createSauce)
 router.get('/:id', auth, sauceCtrl.getOne)
