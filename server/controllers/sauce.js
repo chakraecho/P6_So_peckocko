@@ -19,7 +19,9 @@ exports.createSauce = (req, res, next)=>{
     const saniSauce = sanitize(parseSauce)
     const sauce = new Sauces({
         ...saniSauce,
-        imageUrl: `${req.protocol}://${req.get('host')}/uploads/sauces/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/uploads/sauces/${req.file.filename}`,
+        likes:0,
+        dislikes:0
 
     })
     sauce.save()
