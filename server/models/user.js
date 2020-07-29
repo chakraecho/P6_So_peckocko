@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const lockout = require('mongoose-account-locking')
 
 userSchema = mongoose.Schema({
     userId: {
@@ -13,8 +14,12 @@ userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    wrongPassword : {
+        type: Number
     }
 })
 userSchema.plugin(uniqueValidator)
+
 
 module.exports = mongoose.model('user', userSchema)
