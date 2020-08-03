@@ -36,32 +36,34 @@ exports.getOne = (req,res, next)=>{
     .catch(error => res.status(404).json({ error }));
 }
 
-exports.modifyOne = (req, res, next)=>{
+exports.modifyOne = (req, res,next)=>{
     console.log(req.body)
+    console.log(req.file)
     const id = sanitize(req.params.id)
-
-    if(req.body.sauce == undefined){           
-        const body = sanitize(req.body)
-        const sauce = sanitize(req.body.sauce)                         //without img update
+    if(req.file === undefined){           
+        const body = sanitize(req.body)                       //without img update
         Sauces.updateOne({_id : id}, {...body})
         .then(()=>{res.status(200).json({message :'sauce mis à jour !'})})
         .catch(error => res.status(400).json({error}))
     }
     else{                                         
 //with img update
-        let parseSauce = JSON.parse(req.body.sauce)
+        const parseSauce = JSON.parse(req.body.sauce)
         const saniSauce = sanitize(parseSauce)
-        Sauces.findOne({_id : id})
+        Sauces.findOne({_id : req.params.id})
         .then(sauce => {
             const filename = sauce.imageUrl.split('/uploads/sauces/')[1];
             fs.unlink(`/uploads/sauces/${filename}`)
         })
-        .catch(error => res.status(400).json({error}))
-        Sauces.updateOne({_id : req.params.id}, {imageUrl: `${req.protocol}://${req.get('host')}/uploads/sauces/${req.file.filename}`,_id: id, ...saniSauce })
-        .then(()=> res.status(200).json({message : 'sauce mis à jour !'}))
+        .catch(error => console.log(error))
+        Sauces.update({_id : req.params.id}, {imageUrl: `${req.protocol}://${req.get('host')}/uploads/sauces/${req.file.filename}`,_id: id, ...saniSauce })
+        .then(()=> {
+            console.log('mis a jour')
+            res.status(200).json({message : 'sauce mis à jour !'})})
         .catch(error => res.status(400).json({error}))
     }
 }
+
 exports.deleteOne = (req, res, next)=>{
     const id = sanitize(req.params.id)
     Sauces.findOne({_id : id})
