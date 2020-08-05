@@ -20,7 +20,5 @@ userSchema = mongoose.Schema({
     }
 })
 userSchema.plugin(uniqueValidator)
-userSchema.plugin(lockout)
-
 
 module.exports = mongoose.model('user', userSchema)

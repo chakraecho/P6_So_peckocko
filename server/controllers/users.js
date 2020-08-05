@@ -34,31 +34,31 @@ exports.login = (req, res, next) => {
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
       }
-      else{
+      else {
         bcrypt.compare(password, user.password)
-        .then(valid => {
-          if (!valid) {
-            User.updateOne({email : mail}, {$inc : {wrongPassword : +1}})
-            .then(()=> console.log(user.wrongPassword))
-            .catch(error => error)
-            return res.status(401).json({ error: 'Mot de passe incorrect !' });
-          }
-          else if(user.wrongPassword > 5 ){
-            return res.status(400).json({ message: 'compte bloqué, veuillez contacter un administrateur'})
-          }
-          else if(valid){
-            return res.status(200).json({
-              userId: user._id,
-              token: jwt.sign(
-                { userId: user._id },
-                'cle_super_secrete_ne_Devant_Pas_etre_Partage',
-                { expiresIn: '24h' }
-              )
-            });
-          }
-          
-        })
-        .catch(error => res.status(500).json({ error }));
+          .then(valid => {
+            if (!valid) {
+              User.updateOne({ email: mail }, { $inc: { wrongPassword: +1 } })
+                .then(() => console.log(user.wrongPassword))
+                .catch(error => error)
+              return res.status(401).json({ error: 'Mot de passe incorrect !' });
+            }
+            else if (user.wrongPassword > 5) {
+              return res.status(400).json({ message: 'compte bloqué, veuillez contacter un administrateur' })
+            }
+            else if (valid) {
+              return res.status(200).json({
+                userId: user._id,
+                token: jwt.sign(
+                  { userId: user._id },
+                  'cle_super_secrete_ne_Devant_Pas_etre_Partage',
+                  { expiresIn: '24h' }
+                )
+              });
+            }
+
+          })
+          .catch(error => res.status(500).json({ error }));
       }
     })
     .catch(error => res.status(500).json({ error }));
