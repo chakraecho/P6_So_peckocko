@@ -1,20 +1,32 @@
 const express = require('express')
 const app = express()
-const mongoose = require('mongoose')
-const mongoAuth = require('./mongoauth')
+
 const path = require('path');
 const helmet = require('helmet');
 const toobusy = require('toobusy-js')
+const env = require('dotenv')
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce')
 const bodyParser = require('body-parser');
 
-app.use(function(req, res, next) {
+env.config() //IMPORT env var
+
+const mongoose = require('mongoose')
+mongoose.connect(process.env.DB_URL,  //PLEASE SET DB_URL Var in .env file
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+)
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app.use(function (req, res, next) {
   if (toobusy()) {
-      res.send(503, "Server Too Busy");
+    res.send(503, "Server Too Busy");
   } else {
-  next();
+    next();
   }
 });
 app.use(helmet());
