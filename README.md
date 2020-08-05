@@ -1,7 +1,7 @@
 # P6_So_peckocko  
 projet 6 sur 7 de Openclassrooms  
 Ce projet correspond au développement d'une API pour une application de notation de sauces.  
-Le front est développé sous Angular et fourni par OpenClassrooms.  
+Le front est développé sous Angular et fourni par OpenClassrooms sur le github : https://github.com/OpenClassrooms-Student-Center/dwj-projet6
 Le back est développé sous NodeJS.
 ##prérequis  
 -NodeJS et NPM  
