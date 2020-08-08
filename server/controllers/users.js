@@ -39,7 +39,7 @@ exports.login = (req, res, next) => {
           .then(valid => {
             if (!valid) {
               User.updateOne({ email: mail }, { $inc: { wrongPassword: +1 } })
-                .then(() => console.log(user.wrongPassword))
+                .then()
                 .catch(error => error)
               return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
